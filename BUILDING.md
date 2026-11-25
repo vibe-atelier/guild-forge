@@ -43,6 +43,14 @@ belong to others. Without them, everything still builds:
 - **The RNNoise model**, for Strong noise suppression: see
   `models/README.md`.
 
+## Licences
+
+Nexus's own code is under the MIT licence, in `LICENSE`. The third-party
+code inside it (in `internal/opus/libopus`, `internal/vp8/libvpx`,
+`internal/speexdsp/libspeexdsp` and `internal/rnnoise/csrc`) keeps its own
+licence, in the files beside it, and the Go libraries it uses keep theirs.
+`Third-Party_Notices.txt` in each release lists them all.
+
 ## Checking the code
 
 ```bash

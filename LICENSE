@@ -19,9 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
-This licence covers Nexus's own code. The third-party code inside it (in
-internal/opus/libopus, internal/vp8/libvpx, internal/speexdsp/libspeexdsp and
-internal/rnnoise/csrc) keeps its own licence, in the files beside it, and the
-Go libraries it uses keep theirs. Third-Party_Notices.txt in each release lists
-them all.
