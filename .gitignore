@@ -1,0 +1,39 @@
+# Build output
+/dist/
+/bin/
+*.exe
+
+# Exported server files (contain secrets)
+*.nexus
+
+# Editor / OS clutter
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
+/TEMP/
+
+/opus-1.6.1/
+/libvpx-1.17.0/
+/speexdsp-SpeexDSP-1.2.1/
+/rnnoise-v0.2/
+/NotoColorEmoji.ttf
+/fonts/NotoColorEmoji.ttf
+/Noto_Color_Emoji.zip
+/models/rnnoise.bin
+/rnnoise_data-*.tar.gz
+/nasm-3.02-win64/
+/nasm-3.02-win64.zip
+/nasm-3.02*.tar.gz
+/nasm-*-installer-*.exe
+
+# Files the build script builds into the programs; they come from
+# fonts/ and models/, which Git does not keep either.
+/internal/assets/files/
+
+# Release files made by tools/release.ps1.
+/release/
+
+# Notices the build script writes for the Licenses pages.
+/cmd/guild-forge-window/NOTICES.txt
+/cmd/nexus/NOTICES.txt

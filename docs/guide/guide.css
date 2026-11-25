@@ -1,0 +1,92 @@
+/* Print styles for GUIDE.pdf (A4). */
+@page { size: A4; margin: 16mm 16mm 18mm; }
+@page :first { margin: 0; }
+
+:root {
+  --ink: #16161d;
+  --dim: #5b5b6b;
+  --line: #e4e4ee;
+  --accent: #6d5dfc;
+  --accent-2: #0ea5c4;
+  --soft: #f5f4ff;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { margin: 0; color: var(--ink); font: 10.5pt/1.55 "Segoe UI", system-ui, sans-serif; counter-reset: chapter; }
+
+/* ---- cover ---- */
+.cover {
+  height: 296mm; margin: 0; padding: 40mm 22mm 0; overflow: hidden; break-after: page;
+  background: radial-gradient(120mm 80mm at 50% 0%, #241c52 0%, #000 70%), #000; color: #fff; text-align: center;
+}
+.cover-logo { width: 26mm; height: 26mm; }
+.cover h1 { margin: 6mm 0 0; font-size: 46pt; font-weight: 650; letter-spacing: -.02em; }
+.cover-sub { margin: 0; font-size: 18pt; color: #c9c3ff; font-weight: 600; }
+.cover-tag { margin: 5mm 0 12mm; color: #9a9ab0; font-size: 11pt; }
+.cover-shot { width: 150mm; border-radius: 4mm; border: 1px solid #2a2a35; box-shadow: 0 12mm 30mm rgba(109, 93, 252, .25); }
+.cover-meta { margin-top: 12mm; color: #8a8aa0; font-size: 9.5pt; }
+
+/* ---- pages & headings ---- */
+.page { break-before: page; }
+.page + .page:not([id]) { break-before: auto; }
+h2 { counter-increment: chapter; margin: 0 0 4mm; font-size: 21pt; letter-spacing: -.02em; color: var(--ink); }
+h2::before { content: counter(chapter) "  "; color: var(--accent); }
+h2.nonum { counter-increment: none; }
+h2.nonum::before { content: none; }
+h3 { margin: 7mm 0 2mm; font-size: 13pt; color: var(--ink); break-after: avoid; }
+h4 { margin: 0 0 1.5mm; font-size: 11pt; }
+p { margin: 0 0 3mm; }
+a { color: var(--accent); text-decoration: none; }
+code { font-family: "Cascadia Mono", Consolas, monospace; font-size: 9pt; background: var(--soft); color: #3a2fb0; padding: .3mm 1.2mm; border-radius: 1mm; }
+.small { font-size: 9pt; color: var(--dim); }
+
+/* ---- contents ---- */
+.toc { font-size: 12.5pt; line-height: 1.9; padding-left: 7mm; margin: 1mm 0 4mm; }
+.toc-part { margin: 5mm 0 0; font-size: 9pt; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--dim); }
+.toc li::marker { color: var(--accent); font-weight: 700; }
+.toc a { color: var(--ink); }
+
+/* ---- boxes ---- */
+.note, .tip, .warn { padding: 3mm 4mm; margin: 4mm 0; border-radius: 2mm; font-size: 10pt; break-inside: avoid; }
+.note { background: var(--soft); border-left: 1.2mm solid var(--accent); }
+.tip { background: #ecfbff; border-left: 1.2mm solid var(--accent-2); }
+.warn { background: #fff1f2; border-left: 1.2mm solid #e5484d; }
+.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; margin: 5mm 0; }
+.card { padding: 4mm; border: 1px solid var(--line); border-radius: 3mm; font-size: 9.5pt; break-inside: avoid; }
+.card h4 { color: var(--accent); }
+
+/* ---- terminal ---- */
+pre.term {
+  margin: 3mm 0 4mm; padding: 3.5mm 4.5mm; border-radius: 2.5mm; background: #0b0b10; color: #e6e6f0;
+  font: 8.6pt/1.5 "Cascadia Mono", Consolas, monospace; white-space: pre-wrap; overflow-wrap: anywhere; break-inside: avoid;
+}
+pre.term .p { color: #8b7bff; }
+ol.steps pre.term { margin-top: 2mm; }
+
+/* ---- figures ---- */
+figure { margin: 4mm 0 5mm; break-inside: avoid; }
+figure img { display: block; width: 78%; margin: 0 auto; border-radius: 2.5mm; border: 1px solid #22222c; }
+figure.half img { width: 52%; }
+figcaption { text-align: center; margin-top: 1.8mm; color: var(--dim); font-size: 9pt; }
+
+/* ---- lists & tables ---- */
+ol.steps { padding-left: 6mm; }
+ol.steps li { margin-bottom: 3mm; }
+ul.facts-list { padding-left: 5mm; }
+ul.facts-list li { margin-bottom: 1.5mm; }
+table { width: 100%; border-collapse: collapse; margin: 3mm 0 5mm; font-size: 9.5pt; break-inside: auto; }
+th { text-align: left; background: var(--soft); color: #2d2580; font-weight: 650; }
+th, td { padding: 2mm 2.5mm; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr { break-inside: avoid; }
+table.cmds td:first-child { white-space: nowrap; }
+dl.glossary { display: grid; grid-template-columns: 32mm 1fr; gap: 2mm 4mm; margin: 3mm 0; font-size: 10pt; }
+dl.glossary dt { font-weight: 650; }
+dl.glossary dd { margin: 0; color: #33333f; }
+/* A command's parts, one per line, under the command (for newcomers to Linux). */
+dl.parts { display: grid; grid-template-columns: max-content 1fr; gap: 1.2mm 4mm; margin: 2mm 0 3mm; font-size: 9.5pt; break-inside: avoid; }
+dl.parts dt { margin: 0; }
+dl.parts dd { margin: 0; color: #33333f; }
+p.effect { font-size: 9.5pt; margin: 1mm 0 4mm; }
+p.effect b.reads { color: #157a4a; }
+p.effect b.changes { color: #b0541a; }

@@ -1,0 +1,27 @@
+// Made by tools/make-icon; run it again rather than editing this.
+1 ICON "icon.ico"
+1 VERSIONINFO
+FILEVERSION 0,1,2,0
+PRODUCTVERSION 0,1,2,0
+FILEOS 0x40004
+FILETYPE 0x1
+BEGIN
+  BLOCK "StringFileInfo"
+  BEGIN
+    BLOCK "040904B0"
+    BEGIN
+      VALUE "CompanyName", "vibe-atelier"
+      VALUE "FileDescription", "guild-forge, the Nexus guild host's commands"
+      VALUE "FileVersion", "0.1.2"
+      VALUE "InternalName", "guild-forge"
+      VALUE "LegalCopyright", "Copyright (C) 2026 vibe-atelier"
+      VALUE "OriginalFilename", "guild-forge_Windows-cmd.exe"
+      VALUE "ProductName", "guild-forge"
+      VALUE "ProductVersion", "0.1.2"
+    END
+  END
+  BLOCK "VarFileInfo"
+  BEGIN
+    VALUE "Translation", 0x409, 1200
+  END
+END

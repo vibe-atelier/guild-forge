@@ -4,7 +4,7 @@
 
 *Your people. Your servers. Nobody in between.*
 
-![](img/21-chat.png)
+![](docs/guide/img/21-chat.png)
 
 Version 0.1.2 · November 2026 · Development preview
 
@@ -88,13 +88,13 @@ Nexus is published on GitHub, at `github.com/vibe-atelier/guild-forge` under **R
 > [!TIP]
 > **Windows SmartScreen.** Programs that are not code-signed may show *"Windows protected your PC"*. Click *More info → Run anyway*.
 
-GuildForge's window is downloaded and opened the same way. Installing on Linux is covered under [Installing guild-forge on Linux](#installing-guild-forge-on-linux) below.
+GuildForge's window is downloaded and opened the same way. Installing guild-forge on Linux is covered under [Installing guild-forge on Linux](#installing-guild-forge-on-linux), and the Linux app under [Building the app on Linux](#building-the-app-on-linux).
 
 ### Updating the app
 
 The app only contacts GitHub when you ask. Click the **gear** at the bottom right of the welcome screen, or, once signed in, open **User Settings** and pick **Check Updates** under APP. Press **Check Updates**; if a newer version exists, press **Install Update**, then **Restart Nexus**. Your users, settings and messages stay as they are. The same gear and settings hold **Licenses**, the notices of the software Nexus is built with.
 
-![](img/app-updates.png)
+![](docs/guide/img/app-updates.png)
 
 *Check Updates, opened from the welcome screen's gear.*
 
@@ -172,11 +172,82 @@ guild-forge 0.1.2 is up to date.
 
 **Changes something, only if there is a newer version:** it replaces `/usr/local/bin/guild-forge` and nothing else. It only contacts GitHub when you type it. In GuildForge's window on Windows, the gear's **Check Updates** does the same.
 
+### Building the app on Linux
+
+There is no ready-made Linux app in the releases yet, so on Debian-based Linux such as LMDE the app is built from the Nexus source code folder. These steps were tested on LMDE 7, and list only what that build needed. Type each command in a terminal, inside the Nexus folder unless it says otherwise.
+
+**1. Install the build tools.**
+
+```text
+$ sudo apt install gcc libgl1-mesa-dev xorg-dev libxkbcommon-dev libwayland-dev libasound2-dev
+```
+
+| Part | What it means |
+| --- | --- |
+| `sudo apt install` | Installs packages from your system's store, as the administrator. It asks for your password, then lists what it will add and asks **Y/n**. |
+| `gcc` | The C compiler. Parts of the app (its window, voice and video) are written in C. |
+| `libgl1-mesa-dev` | Drawing with the graphics card (Mesa). |
+| `xorg-dev` | The X.Org window system's libraries, for windows, the mouse and screens. |
+| `libxkbcommon-dev` | The keyboard library for Wayland desktops. |
+| `libwayland-dev` | Wayland, the newer window system. |
+| `libasound2-dev` | Sound (ALSA), for voice channels and notification sounds. |
+
+**Changes something:** it installs these packages and the ones they need. To see what is already installed first, without changing anything: `dpkg-query -W -f='${Package}: ${Status}\n' gcc libgl1-mesa-dev xorg-dev libxkbcommon-dev libwayland-dev libasound2-dev`.
+
+**2. Install Go.** Download `go1.27.4.linux-amd64.tar.gz` from `go.dev/dl` (Go's official site, whose own instructions these steps follow), then:
+
+```text
+$ sha256sum ~/Downloads/go1.27.4.linux-amd64.tar.gz
+$ sudo tar -C /usr/local -xzf ~/Downloads/go1.27.4.linux-amd64.tar.gz
+$ echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.profile
+$ source ~/.profile
+$ go version
+```
+
+| Part | What it means |
+| --- | --- |
+| `sha256sum …` | Prints the download's fingerprint, which must match the SHA256 shown on `go.dev/dl`. Only reads. |
+| `sudo tar -C /usr/local -xzf …` | Unpacks Go into `/usr/local/go`: e**x**tract a g**z**ipped **f**ile, whose name must come right after the `f`. |
+| `echo '…' >> ~/.profile` | Adds Go's folder to the places your terminal looks for commands, each time you sign in. Run it once only. |
+| `source ~/.profile` | Uses that setting straight away, in this terminal. |
+| `go version` | Prints `go version go1.27.4 linux/amd64`. Only reads. |
+
+**Changes something:** it adds the folder `/usr/local/go` and one line to your `~/.profile`.
+
+**3. Build the app and put it in the menu.** In the Nexus folder:
+
+```text
+$ sh build.sh install
+Built dist/linux-amd64/nexus-devclient
+Built dist/linux-amd64/guild-forge
+Built dist/linux-amd64/nexus
+Installed Nexus: find it in your desktop's app menu or app list.
+```
+
+| Part | What it means |
+| --- | --- |
+| `sh build.sh` | Runs the build script, which turns the source code into the programs in `dist/linux-amd64`. The first build downloads the Go libraries the app uses and takes a few minutes. |
+| `install` | Then puts the app in your desktop's menu, for you only: the program in `~/.local/bin`, its logo in `~/.local/share/icons` and its menu entry in `~/.local/share/applications`. |
+
+**Changes something:** it writes the programs into the Nexus folder and, with `install`, three files in your home folder. It needs no `sudo` and changes nothing outside your home folder. Leave out `install` to only build.
+
+**4. Open it** like any other app: find **Nexus** in your desktop's app menu or app list, or search for it by name. Most desktops also let you pin it to the panel, dock or desktop from there.
+
+### Updating and removing it
+
+The Linux app's **Check Updates** tells you when a newer version exists. To update, get the newer source code and run `sh build.sh install` again: your users, settings and messages stay as they are. To remove the app from the menu, delete the three files it added:
+
+```text
+$ rm ~/.local/bin/nexus ~/.local/share/icons/hicolor/scalable/apps/nexus.svg ~/.local/share/applications/nexus.desktop
+```
+
+**Changes something:** `rm` deletes those three files. Your users and messages are kept, in their own folders.
+
 ## 3. Hosting a guild with GuildForge
 
 **GuildForge** creates, runs and looks after the guilds on a computer, up to 8. On Windows, open `GuildForge.exe`: its window starts on two choices. **Create Guild** is greyed out once 8 guilds exist, and **Manage Guild** until the first one does. The gear at the bottom right holds **Licenses** and **Check Updates**.
 
-![](img/forge-home.png)
+![](docs/guide/img/forge-home.png)
 
 *GuildForge's home screen.*
 
@@ -184,7 +255,7 @@ guild-forge 0.1.2 is up to date.
 
 **Create Guild** has two tabs. **New Guild** asks for a password (it protects the guild's settings, exports and backups), a port (one is suggested), and optionally a folder for its files. **Import Guild** brings in a `.nexus` file exported from another computer, or a guild folder.
 
-![](img/forge-create.png)
+![](docs/guide/img/forge-create.png)
 
 *Create Guild, New Guild tab.*
 
@@ -192,11 +263,11 @@ guild-forge 0.1.2 is up to date.
 
 **Manage Guild** lists the guilds and their state. Pick one for its settings page: **Overview** (start or stop it, its addresses and ID), **Settings** (port, starting automatically, password), **Pairing** (broadcast and the one-time password for its first owner), **Backups**, **Export**, and **Delete Guild**.
 
-![](img/forge-manage.png)
+![](docs/guide/img/forge-manage.png)
 
 *The guilds on this computer.*
 
-![](img/forge-pairing.png)
+![](docs/guide/img/forge-pairing.png)
 
 *Pairing: the one-time password the owner types in the app.*
 
@@ -336,7 +407,7 @@ On your own Wi-Fi, people reach your guild straight away. From elsewhere, your *
 
 While a guild runs, GuildForge asks the router to open its port, and closes it again when the guild stops or is deleted. The guild's **Overview** then lists its **ADDRESSES**, each with **Copy**:
 
-![](img/forge-addresses.png)
+![](docs/guide/img/forge-addresses.png)
 
 *A guild's addresses (made-up ones here).*
 
@@ -411,7 +482,7 @@ The `.nexus` file is **encrypted with the guild's password**. On the other compu
 
 Open Nexus from its shortcut. The welcome screen has just two choices, and the gear at the bottom right holds **Licenses** and **Check Updates**.
 
-![](img/01-welcome.png)
+![](docs/guide/img/01-welcome.png)
 
 *The welcome screen.*
 
@@ -419,7 +490,7 @@ Open Nexus from its shortcut. The welcome screen has just two choices, and the g
 
 Choose a name and a password (at least 8 characters), and click **Next**. Then type the password again and check the folder. It fills itself in as `Documents\Nexus\<name>`; use **Browse…** to choose another place.
 
-![](img/02-create-user.png)
+![](docs/guide/img/02-create-user.png)
 
 *Creating a user. The bar under the password shows how strong it is.*
 
@@ -430,7 +501,7 @@ Choose a name and a password (at least 8 characters), and click **Next**. Then t
 
 After you create or load a user, you see the **Friends** page. The left rail lists your guilds, and the **+** adds one. At the bottom left are you, the **gear** (User Settings) and the **lock**.
 
-![](img/03-home.png)
+![](docs/guide/img/03-home.png)
 
 *Home: the Friends page.*
 
@@ -440,7 +511,7 @@ Click your name at the bottom left to see your profile: your name, a short versi
 
 **Edit Profile** (or User Settings, **Profile**) changes your name, picture, banner and bio (a short text about you, with Markdown). Everyone in your guilds and your friends see them. Until you choose a picture, you have a small network drawing in your own colours.
 
-![](img/39-edit-profile.png)
+![](docs/guide/img/39-edit-profile.png)
 
 *User Settings, Profile.*
 
@@ -450,7 +521,7 @@ In each guild you can also have a **nickname**: the guild's gear, then **Nicknam
 
 Both are in User Settings, under **My Account**. **Password** needs your current password. **Recovery Code** makes a code of 32 letters and digits, shown only once: write it down or print it, and keep it safe. If you forget your password, click **Forgot Password** on the sign-in screen and type the code to choose a new one. Making a new code stops the old one working.
 
-![](img/42-recovery.png)
+![](docs/guide/img/42-recovery.png)
 
 *Making a recovery code.*
 
@@ -458,7 +529,7 @@ Both are in User Settings, under **My Account**. **Password** needs your current
 
 When the Nexus window isn't in front, Windows (or Linux) shows a pop-up for **mentions** of you or your roles, **replies** to your messages, and **private messages**. **Notifications** above a chat chooses **All Messages**, **Mentions Only** or **Nothing** for that channel; the guild's gear, then **Notifications**, does it for the whole guild. Guilds remember these choices, which categories you folded and what you have read, so they follow you to another computer. A short sound plays for new messages; turn off **Sounds** in User Settings, under Notifications.
 
-![](img/41-notify.png)
+![](docs/guide/img/41-notify.png)
 
 *Notifications for one channel.*
 
@@ -466,11 +537,11 @@ When the Nexus window isn't in front, Windows (or Linux) shows a pop-up for **me
 
 The **lock** button (bottom left) signs you out and clears your keys from memory. **Load User** lists the users opened before on this computer; you can also **Browse…** to a user folder, or type its path.
 
-![](img/10-load-user.png)
+![](docs/guide/img/10-load-user.png)
 
 *Load User. Hover over a user and click × to remove it from the list (the folder itself is not touched).*
 
-![](img/11-unlock.png)
+![](docs/guide/img/11-unlock.png)
 
 *Unlocking a user.*
 
@@ -478,7 +549,7 @@ The **lock** button (bottom left) signs you out and clears your keys from memory
 
 Anyone with a guild's **address and port** can ask to join. Click the green **+**, stay on the **Join** tab, type the address in **Link (IP Address)** and the port in **Port**, and click **Check**. (You can also type both in the first box, like `127.0.0.1:50000`; the Port box is then ignored.)
 
-![](img/14-join.png)
+![](docs/guide/img/14-join.png)
 
 *After Check, the guild's About page fills the window, with Cancel, Rules and Join.*
 
@@ -488,11 +559,11 @@ Anyone with a guild's **address and port** can ask to join. Click the green **+*
 
 If the guild has a CAPTCHA, you answer its questions one page at a time, in the main area. Once you move on, you can't change an answer. The choices are shuffled each time.
 
-![](img/15-quiz.png)
+![](docs/guide/img/15-quiz.png)
 
 *The owner's welcome, then one question per page.*
 
-![](img/16-quiz-passed.png)
+![](docs/guide/img/16-quiz-passed.png)
 
 *Passed, with the owner's own message.*
 
@@ -503,7 +574,7 @@ If the guild has a CAPTCHA, you answer its questions one page at a time, in the 
 
 If the owner approves new members, the guild appears grey in your list with *Waiting for the owner's approval*. As soon as the owner accepts you, it turns to colour by itself. **Cancel Request** removes it from your list.
 
-![](img/17-waiting.png)
+![](docs/guide/img/17-waiting.png)
 
 *Waiting for the owner's approval.*
 
@@ -515,7 +586,7 @@ If you are later removed from a guild, it shows *You were removed from this guil
 
 Every guild has an About page: its picture, name, number of members and About text, with **Copy Address** to invite people. The About text can use Markdown, such as ****bold**** and lists. People who help run the guild also see a strip with join requests waiting and **Server Settings**.
 
-![](img/06-about.png)
+![](docs/guide/img/06-about.png)
 
 *A guild's About page.*
 
@@ -525,7 +596,7 @@ On the left, under the guild's name, are **About**, **Members** (the owner has a
 
 The **gear** next to the guild's name opens its **Server Settings** page. The categories are on the left, in groups. Everyone has **Nickname** and **Notifications**; people who help run the guild see the categories they may use. **Leave Guild** is at the bottom.
 
-![](img/07-guild-menu.png)
+![](docs/guide/img/07-guild-menu.png)
 
 *Server Settings, as the owner sees it.*
 
@@ -533,7 +604,7 @@ The **gear** next to the guild's name opens its **Server Settings** page. The ca
 
 The app keeps a live connection to each guild. If a guild stops, or its computer is off, its picture turns **grey**; hover over it to see why. Nexus keeps trying, and the guild turns back to colour by itself when it can be reached again.
 
-![](img/09-offline.png)
+![](docs/guide/img/09-offline.png)
 
 *An offline guild. Its name and picture are still shown.*
 
@@ -545,7 +616,7 @@ You can use the same user on several computers, but each guild talks to **only o
 
 Click a channel on the left to open it. Type in the box at the bottom and press **Enter** to send; **Shift + Enter** starts a new line.
 
-![](img/21-chat.png)
+![](docs/guide/img/21-chat.png)
 
 *A channel: a reply, a reaction and a mention.*
 
@@ -592,11 +663,11 @@ The **paper clip**, next to the message box, sends a picture or any file of up t
 
 A guild can have up to 50 emoji of its own (Server Settings, **Custom Emoji**, for people with **Manage Guild**). Click the **smiley face** by the message box, or type `:name:`. You can use the emoji of every guild you're in, everywhere: the guild you use it in gets a copy, so everyone there sees it. A message of only emoji shows them big, and the message's **⋯** → **React** lists them too.
 
-![](img/36-chat-media.png)
+![](docs/guide/img/36-chat-media.png)
 
 *A picture, big emoji, a custom reaction and a link to a Thread post.*
 
-![](img/37-emoji.png)
+![](docs/guide/img/37-emoji.png)
 
 *Server Settings, Custom Emoji.*
 
@@ -608,11 +679,11 @@ A guild can have three more pages, listed under **About** in its side bar. Peopl
 
 The month, with the days that have events marked, and the month's events below it. Use the arrows for other months. Click an event to read its details. People with **Manage Events** use **New Event**: a title, a start date with an optional time and time zone, an optional end, and details in Markdown. Times are shown in the time zone they were written in.
 
-![](img/31-calendar.png)
+![](docs/guide/img/31-calendar.png)
 
 *The Calendar.*
 
-![](img/32-event.png)
+![](docs/guide/img/32-event.png)
 
 *An event's page.*
 
@@ -620,7 +691,7 @@ The month, with the days that have events marked, and the month's events below i
 
 Posts with comments, newest first. Like 👍 or dislike 👎 each post or comment once (click again to take it back). **Reply** answers a comment; replies are indented under it. You can edit and delete your own posts; people with **Manage Pages** can delete anyone's. **Copy Link** copies a link to a post that you can paste in a chat.
 
-![](img/33-thread.png)
+![](docs/guide/img/33-thread.png)
 
 *A post, a comment and a reply.*
 
@@ -628,7 +699,7 @@ Posts with comments, newest first. Like 👍 or dislike 👎 each post or commen
 
 Pages of knowledge, listed under their headings. People with **Edit Wiki** make and change them. In a page, `[[Page Title]]` links to another Wiki page and `#channel-name` to a channel.
 
-![](img/34-wiki.png)
+![](docs/guide/img/34-wiki.png)
 
 *A Wiki page with a picture and links.*
 
@@ -640,7 +711,7 @@ In the Rules, events, posts and Wiki pages, **Add Picture** uploads a picture to
 
 If you joined by ticking *"I agree to follow these rules"* and the Rules change later, the About page tells you, once. By staying a member you agree to the new Rules; **Rules** shows them, and **OK** hides the notice.
 
-![](img/35-rules-notice.png)
+![](docs/guide/img/35-rules-notice.png)
 
 *The notice Ben sees after the Rules changed.*
 
@@ -648,7 +719,7 @@ If you joined by ticking *"I agree to follow these rules"* and the Rules change 
 
 A guild can have its own currency (Server Settings, **Currency**, for people with **Manage Currency**): a name like *Pixels*, an icon, and an optional **Shop**. It is not real money. Staff make coins into the guild's bank and give them to members from **Wallet** → **Bank**.
 
-![](img/43-wallet.png)
+![](docs/guide/img/43-wallet.png)
 
 *Ben's Wallet: his balance and history. Only he and the staff can see it.*
 
@@ -658,11 +729,11 @@ In the **Shop**, **Buy** pays for an item; the coins go back to the bank, and th
 
 Some items are **auctioned** instead: where the price would be is the highest bid so far, with the **Highest Bidder** and when the auction ends under the description. **Bid** shows your balance and the current bid; your bid is taken from your wallet and held, and comes straight back if someone bids more. When the auction ends, the highest bidder has the item (a Role at once; staff deliver other things). Staff choose **Sale Type: Auction** with a starting bid and an end time when making an item.
 
-![](img/45-shop.png)
+![](docs/guide/img/45-shop.png)
 
 *The Shop.*
 
-![](img/44-bank.png)
+![](docs/guide/img/44-bank.png)
 
 *The Bank, for staff: Bank Balance, In Circulation, and making and giving coins. Every member's balance is on the Balances page.*
 
@@ -670,7 +741,7 @@ Some items are **auctioned** instead: where the price would be is the highest bi
 
 The clock by the message box has **Create Poll**, **Schedule Message**, **Disappearing Message**, **Scheduled Messages** and **Pinned Messages**. **Pins** at the top of a chat, with how many there are, also opens the pinned messages.
 
-![](img/chat-telegram.png)
+![](docs/guide/img/chat-telegram.png)
 
 *A forwarded message, a pinned poll, a quiz, a spoiler, and a message that disappears.*
 
@@ -681,7 +752,7 @@ The clock by the message box has **Create Poll**, **Schedule Message**, **Disapp
 - A message's **⋯** has **Forward** (to any channel you can write in, or a friend), **Pin** (with the Pin Messages permission) and, once it was edited, **Edit History**.
 - **Slow Mode**, in a channel's Messages settings, lets each member send one message every so often.
 
-![](img/create-poll.png)
+![](docs/guide/img/create-poll.png)
 
 *Create Poll.*
 
@@ -691,7 +762,7 @@ The guild still can't read any of it: questions, choices, spoilers and forwarded
 
 A **voice channel** is for talking. Make one with the **+** by CHANNELS and the Kind **Voice Channel**; it shows with a speaker icon. Click it, then **Join Voice**. Everyone in it is listed under its name, with a green ring while they talk. You can be in one voice channel at a time.
 
-![](img/voice-room.png)
+![](docs/guide/img/voice-room.png)
 
 *In a voice channel. The bar above your name says where you are; the red phone leaves.*
 
@@ -701,7 +772,7 @@ Once you have joined, the voice page's buttons are icons in a row at the bottom 
 
 User Settings, **Voice**: choose your microphone and speakers. By default your microphone sends whenever you are louder than **Input Sensitivity**: talk, and set it just below where the bar turns green. Under **VOICE PROCESSING**, **Echo Cancellation** (for speakers instead of headphones) and **Automatic Gain** are on unless you turn them off. **Noise Suppression** is **Strong** (RNNoise, trained on real noise such as typing, fans and traffic), **Standard** (lighter on the computer) or **Off**. Or turn on **Enable Push-To-Talk** and hold a key (``` unless you choose another) while you talk. On Windows the key works even when another window is in front. **Soundboard Volume** sets how loud soundboard sounds are for you.
 
-![](img/voice-settings.png)
+![](docs/guide/img/voice-settings.png)
 
 *User Settings, Voice.*
 
@@ -709,7 +780,7 @@ User Settings, **Voice**: choose your microphone and speakers. By default your m
 
 In a voice channel, **Share Screen** lets the others see your screen, or one window. Choose it from the **Screens** or **Windows** tab, pick **720p** or **1080p**, and leave **Share Sound** on to send what your computer plays (a video's sound, a game's). Your microphone still goes through voice as usual, and the call itself isn't sent back. **Go Live** starts it.
 
-![](img/share-screen.png)
+![](docs/guide/img/share-screen.png)
 
 *Share Screen.*
 
@@ -721,7 +792,7 @@ In User Settings, **Voice**, you can choose a **Push-To-Blur** and a **Push-To-M
 
 Click someone's tile on the voice page to see their **Volume**: from 0 to 200%, only for you, and remembered for that person. While someone shares their screen, their tile shows a small picture of it, about every 5 seconds, so you can see what it is before choosing **Watch**.
 
-![](img/voice-moderate.png)
+![](docs/guide/img/voice-moderate.png)
 
 *Ben's tile, chosen: his volume, and what a moderator may do.*
 
@@ -735,7 +806,7 @@ A guild can have up to 25 short sounds, each up to 10 seconds. Someone with **Ma
 
 In a voice channel, **Start Camera** turns your camera on. Your camera then shows on your tile for everyone in the channel, like an online meeting; nobody needs to click Watch. Choose which camera in User Settings, **Voice**. Like voice, it is sealed with the voice channel's key.
 
-![](img/voice-camera.png)
+![](docs/guide/img/voice-camera.png)
 
 *Camera on while sharing (a made-up camera here).*
 
@@ -749,7 +820,7 @@ Private messages are between two **friends**. They travel through a guild you bo
 
 In a guild's member list, click **⋯** next to someone, then **Add Friend**. Or, on the Friends page, open the Add Friend tab (the icon at the left of the tabs) and paste their user ID (from their profile). They see your request in the **Requests** tab and can **Accept** or **Decline**. Until they accept, neither of you can send messages.
 
-![](img/26-request.png)
+![](docs/guide/img/26-request.png)
 
 *Ben sees Alice's request in the Requests tab.*
 
@@ -759,7 +830,7 @@ The **All** tab lists every friend, online ones first, grouped by status and in 
 
 Click a friend to open your chat. It works like a channel: Markdown, replies, reactions, editing and deleting (the **⋯** next to a message), and typing. The **paper clip** sends a picture or file of up to 2 MB. Ticks next to your messages show how far they got: **one grey tick** when sent, **two grey ticks** when your friend's app received it, and **two red ticks** once they read it (they can turn reading ticks off in User Settings, Privacy, **Read Receipts**). The smiley adds emoji.
 
-![](img/27-dm-chat.png)
+![](docs/guide/img/27-dm-chat.png)
 
 *A private chat, with a reply, a reaction, ticks, and the Verified badge.*
 
@@ -771,7 +842,7 @@ Click a friend to open your chat. It works like a channel: Markdown, replies, re
 
 To be sure a friend is really who they say, use **Verify** at the top of your chat. Their app shows a 9-character code for you (like `K7Q-4MZ-9TB`); they tell it to you in person or on a call, and you type it under **Their Code**. If it matches, a **✔ Verified** badge appears next to their name. Your app shows your own code for them in the same window. If their keys ever change, the badge turns into **⚠ Key Changed**: verify them again before trusting them. Once verified, the same place offers **Remove Verification**.
 
-![](img/28-verify.png)
+![](docs/guide/img/28-verify.png)
 
 *Ben's code for Alice.*
 
@@ -779,7 +850,7 @@ To be sure a friend is really who they say, use **Verify** at the top of your ch
 
 The **⋯** at the top of a chat has **Note** (a private note only you see), **Copy ID**, **Remove Friend** and **Block**. A blocked person can't send you messages or requests, and their messages in guild channels are collapsed for you. They aren't told. The **Blocked** tab on the Friends page shows them, with **Unblock**.
 
-![](img/29-member-contact.png)
+![](docs/guide/img/29-member-contact.png)
 
 *A member's ⋯ has Message (or Add Friend) and Block.*
 
@@ -806,7 +877,7 @@ A new guild has no owner. Pairing makes you its **owner (ADMIN)**. You need the 
 
 2. **In the app**, click the green **+**, choose the **Pair Owner** tab, type the address and port, and click **Check**. Then type the one-time password and click **Pair**.
 
-![](img/04-add-guild.png)
+![](docs/guide/img/04-add-guild.png)
 
 *Pairing as owner. *Check* shows the guild and whether it is broadcasting.*
 
@@ -821,7 +892,7 @@ A new guild has no owner. Pairing makes you its **owner (ADMIN)**. You need the 
 
 Right after pairing, **Server Settings** opens on **Overview** so that you can name the guild. Later, open it with the gear next to the guild's name.
 
-![](img/05-server-settings.png)
+![](docs/guide/img/05-server-settings.png)
 
 *Overview: picture, name, About text, the member count, default notifications and the guild's details.*
 
@@ -835,7 +906,7 @@ Click the **+** next to **Channels**. There are three kinds:
 - **Folder**: a group that can be folded away, inside a category or another folder (up to 3 deep).
 - **Channel**: where people chat. Its **Topic** is shown at the top of the chat.
 
-![](img/20-new-channel.png)
+![](docs/guide/img/20-new-channel.png)
 
 *Making a channel.*
 
@@ -854,7 +925,7 @@ As the owner, open Server Settings with the gear next to the guild's name. The *
 
 ### Joining Conditions and Rules
 
-![](img/12-join-rules.png)
+![](docs/guide/img/12-join-rules.png)
 
 *Joining Conditions. The Rules category holds the Rules settings.*
 
@@ -875,7 +946,7 @@ Write up to **16 questions**; each time, Nexus asks a random few of them (up to 
 
 Each question has a **Weightage**: **Must Always Get Right** (getting it wrong fails the questions), **Regular**, or **Shouldn't Count** (asked, but not marked). **Always ask this question.** puts it in every quiz; random others fill up the rest.
 
-![](img/13-captcha.png)
+![](docs/guide/img/13-captcha.png)
 
 *CAPTCHA: the settings, with the Question Bank in the second tab.*
 
@@ -883,7 +954,7 @@ Each question has a **Weightage**: **Must Always Get Right** (getting it wrong f
 
 When approval is on, the number next to **Join Requests** in the side bar shows how many people are waiting.
 
-![](img/18-requests.png)
+![](docs/guide/img/18-requests.png)
 
 *Approve or decline each request.*
 
@@ -891,7 +962,7 @@ When approval is on, the number next to **Join Requests** in the side bar shows 
 
 On the **Members** page, click **⋯** next to a member. **Kick** removes them (they may join again). **Ban** stops that user from ever joining again. Tick **Block Address** to also block the internet address they used, but that can block other people who share it, such as family members. Server Settings, **Bans**, lists the bans and lets you lift them. **Timeout** silences someone for a while (1 minute to 1 week) without removing them: they can still read, but can't write, react or post until it ends. **Remove Timeout** ends it early.
 
-![](img/19-members.png)
+![](docs/guide/img/19-members.png)
 
 *Kick or ban a member.*
 
@@ -901,7 +972,7 @@ When someone leaves or is removed, the members' apps make new channel keys by th
 
 Roles let you share the work of running a guild. Open them in Server Settings, under **Roles** (you need the **Manage Roles** permission; the owner has every permission).
 
-![](img/22-roles.png)
+![](docs/guide/img/22-roles.png)
 
 *The guild's roles, highest rank first.*
 
@@ -913,7 +984,7 @@ Every role has a **rank**. You can only manage people and roles ranked **below**
 
 Give a role a name, a rank, a colour (names show in the colour of their highest coloured role), and tick its permissions. **Separate Group** lists its members as their own group on the Members page; **Mentionable** lets anyone @mention it. **Purchasable** lets members buy it in the Shop (add it there as a Role item); **Accessible To** limits buying to some roles, and **Mutually Exclusive** lists roles it can't be worn with. You can only give permissions you have yourself.
 
-![](img/23-role-edit.png)
+![](docs/guide/img/23-role-edit.png)
 
 *Editing the Mod role.*
 
@@ -929,13 +1000,13 @@ Give a role a name, a rank, a colour (names show in the colour of their highest 
 | Timeout | Silence people ranked below you for a while, without removing them. |
 | View Channel, Send Messages, Add Reactions | Reading, writing and reacting. |
 | Manage Messages | Delete other people's messages. |
-| Connect, Speak, Stream, Moderate Voice, Priority Speaker | For voice and streaming, which come in a later phase. |
+| Connect, Speak, Stream, Moderate Voice, Priority Speaker | Joining voice channels, speaking, sharing a screen or camera, moderating voice, and being heard over others. |
 
 ### Giving someone a role
 
 On the **Members** page, click **⋯** next to a member, tick their roles and click **Save Roles**.
 
-![](img/25-member-roles.png)
+![](docs/guide/img/25-member-roles.png)
 
 *Ben's roles.*
 
@@ -943,7 +1014,7 @@ On the **Members** page, click **⋯** next to a member, tick their roles and cl
 
 A category, folder or channel can change permissions for a role: click its gear, then **Permissions**. For each role, every permission can **Inherit**, **Allow** or **Deny**. The closest rule wins: a channel's rule beats its folder's, which beats its category's. **Inherit Rules** makes a channel or folder use the rules above it instead of its own.
 
-![](img/24-channel-rules.png)
+![](docs/guide/img/24-channel-rules.png)
 
 *A staff channel: Everyone can't see it; Mods can.*
 
@@ -959,7 +1030,7 @@ In Server Settings, open **Ownership** and pick a member. They must **accept**; 
 
 **Leave Guild** is at the bottom of Server Settings. If you are the owner, Nexus warns you that the guild will have **no owner** until its host broadcasts it and someone pairs again. You must type the guild's name to confirm.
 
-![](img/08-leave-owner.png)
+![](docs/guide/img/08-leave-owner.png)
 
 *Leaving as the owner.*
 
