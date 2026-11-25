@@ -6,7 +6,7 @@
 
 ![](docs/guide/img/21-chat.png)
 
-Version 0.1.2 · November 2026 · Development preview
+Version 0.1.0 · November 2026 · Development preview
 
 ## Contents
 
@@ -106,10 +106,10 @@ Nexus draws its own window (with Fyne), so no web browser is involved.
 
 Open a **terminal** (the Linux command window) and type these one at a time, pressing **Enter** after each. Under each command, every part is explained, along with whether it only looks at your computer or changes something on it.
 
-**1. Download it.** Replace `0.1.2` with the newest version shown on GitHub. It is one long line: type it without pressing Enter until the end.
+**1. Download it.** Replace `0.1.0` with the newest version shown on GitHub. It is one long line: type it without pressing Enter until the end.
 
 ```text
-$ curl -fL -o ~/Downloads/guild-forge_Debian https://github.com/vibe-atelier/guild-forge/releases/download/v0.1.2/guild-forge_Debian
+$ curl -fL -o ~/Downloads/guild-forge_Debian https://github.com/vibe-atelier/guild-forge/releases/download/v0.1.0/guild-forge_Debian
 ```
 
 | Part | What it means |
@@ -153,7 +153,7 @@ $ sudo install -m 755 ~/Downloads/guild-forge_Debian /usr/local/bin/guild-forge
 
 ```text
 $ guild-forge version
-guild-forge 0.1.2
+guild-forge 0.1.0
 ```
 
 **Only reads.** It prints the version and stops.
@@ -163,7 +163,7 @@ guild-forge 0.1.2
 ```text
 $ sudo guild-forge update
 Checking GitHub for a newer guild-forge...
-guild-forge 0.1.2 is up to date.
+guild-forge 0.1.0 is up to date.
 ```
 
 | Part | What it means |
